@@ -4,21 +4,21 @@
     <modelVersion>4.0.0</modelVersion>
     <!-- Project from https://start.vaadin.com/project/270e7eed-413d-4749-b9ac-3fed43b671e4 -->
     <groupId>cu.limitexpert</groupId>
-    <artifactId>expertoenlmites</artifactId>
-    <name>expertoenlmites</name>
+    <artifactId>expertoenlimites</artifactId>
+    <name>expertoenlimites</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
         <java.version>17</java.version>
-        <vaadin.version>24.0.5</vaadin.version>
-        <selenium.version>4.8.3</selenium.version>
+        <vaadin.version>24.0.0</vaadin.version>
+        <selenium.version>4.8.1</selenium.version>
     </properties>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.6</version>
+        <version>3.0.4</version>
     </parent>
 
     <repositories>
@@ -28,6 +28,11 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <name>JitPack Repository</name>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
@@ -78,6 +83,12 @@
             <artifactId>vaadin-testbench-junit5</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.SWI-Prolog</groupId>
+            <artifactId>packages-jpl</artifactId>
+            <version>V8.3.2</version>	<!-- version 7.6.1 of JPL -->
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -87,7 +98,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5870</jvmArguments>
+                    <jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5930</jvmArguments>
                     <wait>500</wait>
                     <maxAttempts>240</maxAttempts>
                 </configuration>
