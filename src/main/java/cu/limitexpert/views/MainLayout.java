@@ -12,7 +12,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import cu.limitexpert.components.appnav.AppNav;
 import cu.limitexpert.components.appnav.AppNavItem;
-import cu.limitexpert.views.empty.EmptyView;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 /**
@@ -53,7 +52,7 @@ public class MainLayout extends AppLayout {
         // For documentation, visit https://github.com/vaadin/vcf-nav#readme
         AppNav nav = new AppNav();
 
-        nav.addItem(new AppNavItem("Empty", EmptyView.class, LineAwesomeIcon.FILE.create()));
+        nav.addItem(new AppNavItem("Calcular Límites", LimitView.class, LineAwesomeIcon.ARROW_RIGHT_SOLID.create()));
 
         return nav;
     }
