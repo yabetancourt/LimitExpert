@@ -1,4 +1,4 @@
-package cu.limitexpert.components.appnav;
+package cu.limitexpert.components;
 
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;

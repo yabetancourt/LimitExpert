@@ -1,4 +1,5 @@
 import katex from "katex";
+import AsciiMathParser from "asciimath2tex";
 
 export class MathFormula extends HTMLElement {
 
@@ -6,15 +7,6 @@ export class MathFormula extends HTMLElement {
 
     constructor() {
         super();
-    //     const shadow = this.attachShadow({mode: 'open'});
-    //     const style = document.createElement('style');
-    //     style.textContent = `
-    //   .katex-html {
-    //     display: block;
-    //   }
-    // `;
-    //     if (style.sheet !== null)
-    //         shadow.adoptedStyleSheets = [style.sheet];
     }
 
     connectedCallback() {
@@ -26,7 +18,8 @@ export class MathFormula extends HTMLElement {
     }
 
     set formula(value) {
-        this._formula = value;
+        const parser: AsciiMathParser = new AsciiMathParser();
+        this._formula = parser.parse(value);
         katex.render(this.formula, this, {throwOnError: true});
     }
 

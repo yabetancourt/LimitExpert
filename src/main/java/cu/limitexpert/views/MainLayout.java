@@ -10,8 +10,8 @@ import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-import cu.limitexpert.components.appnav.AppNav;
-import cu.limitexpert.components.appnav.AppNavItem;
+import cu.limitexpert.components.AppNav;
+import cu.limitexpert.components.AppNavItem;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 /**

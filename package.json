@@ -70,6 +70,7 @@
     "@vaadin/vaadin-usage-statistics": "2.1.2",
     "@vaadin/vertical-layout": "24.0.0",
     "@vaadin/virtual-list": "24.0.0",
+    "asciimath2tex": "^1.4.0",
     "construct-style-sheets-polyfill": "3.1.0",
     "date-fns": "2.29.3",
     "katex": "^0.16.7",
@@ -188,7 +189,7 @@
       "workbox-core": "6.5.4",
       "workbox-precaching": "6.5.4"
     },
-    "hash": "c14ccf662e0dea0c3b70c77733b1757efdcbc1ccfba7c00611a95ce336a26c06"
+    "hash": "b0dec88c2d57a372a48c91a21263b971ad314b28b74a41b9f89c705bf3072174"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -267,6 +268,7 @@
     "date-fns": "$date-fns",
     "katex": "$katex",
     "katex-elements": "$katex-elements",
-    "@vaadin-component-factory/vcf-nav": "$@vaadin-component-factory/vcf-nav"
+    "@vaadin-component-factory/vcf-nav": "$@vaadin-component-factory/vcf-nav",
+    "asciimath2tex": "$asciimath2tex"
   }
 }

@@ -1,4 +1,4 @@
-package cu.limitexpert.components.appnav;
+package cu.limitexpert.components;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasSize;
@@ -7,6 +7,7 @@ import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.dom.Element;
+
 import java.util.Optional;
 
 /**
