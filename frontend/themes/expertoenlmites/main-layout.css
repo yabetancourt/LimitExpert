@@ -1,3 +1,7 @@
+.katex-html {
+  display: none;
+}
+
 vaadin-scroller[slot="drawer"] {
   padding: var(--lumo-space-s);
 }

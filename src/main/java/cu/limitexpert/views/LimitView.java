@@ -7,9 +7,11 @@ import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import cu.limitexpert.components.appnav.MathFormula;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +32,14 @@ public class LimitView extends VerticalLayout {
                 new FormLayout.ResponsiveStep("400px", 6));
         formLayout.setWidthFull();
 
+        MathFormula formula = new MathFormula();
+
         // Crear los campos de entrada
         functionField = new TextField("Función:");
         functionField.setWidthFull();
         functionField.setRequired(true);
+        functionField.setValueChangeMode(ValueChangeMode.TIMEOUT);
+        functionField.addValueChangeListener(valueChange -> formula.setFormula(functionField.getValue()));
         limitField = new NumberField("Valor al que tiende x:");
         limitField.setWidthFull();
         limitField.setRequired(true);
@@ -50,11 +56,12 @@ public class LimitView extends VerticalLayout {
         // Crear el contenedor de los pasos
         stepContainer = new VerticalLayout();
         stepContainer.setWidth("100%");
-        stepContainer.setHeight("400px");
+        stepContainer.setMinHeight("400px");
         stepContainer.setVisible(false); // Ocultar el contenedor al inicio
 
         // Agregar el contenedor a la vista
         add(formLayout);
+        add(formula);
         add(stepContainer);
 
         // Configuración del botón de cálculo
