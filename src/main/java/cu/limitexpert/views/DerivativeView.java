@@ -10,7 +10,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import cu.limitexpert.components.MathFormula;
 
@@ -18,16 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@PageTitle("Calculadora de límites")
-@Route(value = "limit", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
-public class LimitView extends VerticalLayout {
+@PageTitle("Calculadora de Derivadas")
+@Route(value = "derivative", layout = MainLayout.class)
+public class DerivativeView extends VerticalLayout {
 
     private final TextField functionField;
-    private final TextField limitField;
+    private final TextField variableField;
     private final VerticalLayout stepContainer;
 
-    public LimitView() {
+    public DerivativeView() {
         // Crear el formulario
         FormLayout formLayout = new FormLayout();
         formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 1),
@@ -46,20 +44,20 @@ public class LimitView extends VerticalLayout {
         functionField.setRequired(true);
         functionField.setValueChangeMode(ValueChangeMode.TIMEOUT);
 
-        limitField = new TextField("Valor al que tiende x:");
-        limitField.setWidthFull();
-        limitField.setRequired(true);
-        limitField.setValueChangeMode(ValueChangeMode.TIMEOUT);
+        variableField = new TextField("Derivar respecto a: ");
+        variableField.setWidthFull();
+        variableField.setRequired(true);
+        variableField.setValueChangeMode(ValueChangeMode.TIMEOUT);
 
         // Agregar listeners a los campos de entrada
         functionField.addValueChangeListener(valueChange -> {
-            formula.setFormula(getExpression(limitField.getValue(), functionField.getValue()));
-            expression.setVisible(!Objects.equals(functionField.getValue(), "") || limitField.getValue() != null);
+            formula.setFormula(getExpression(variableField.getValue(), functionField.getValue()));
+            expression.setVisible(!Objects.equals(functionField.getValue(), "") || variableField.getValue() != null);
         });
 
-        limitField.addValueChangeListener(value -> {
-            formula.setFormula(getExpression(limitField.getValue(), functionField.getValue()));
-            expression.setVisible(!Objects.equals(functionField.getValue(), "") || limitField.getValue() != null);
+        variableField.addValueChangeListener(value -> {
+            formula.setFormula(getExpression(variableField.getValue(), functionField.getValue()));
+            expression.setVisible(!Objects.equals(functionField.getValue(), "") || variableField.getValue() != null);
         });
 
         // Crear el botón de cálculo
@@ -68,7 +66,7 @@ public class LimitView extends VerticalLayout {
 
         // Agregar los componentes al formulario
         formLayout.add(functionField, 4);
-        formLayout.add(limitField, 1);
+        formLayout.add(variableField, 1);
         formLayout.add(calculateButton, 1);
 
         // Crear el contenedor de los pasos
@@ -86,18 +84,18 @@ public class LimitView extends VerticalLayout {
         // Configuración del botón de cálculo
         calculateButton.addClickListener(event -> {
             // Validar los campos de entrada
-            if (functionField.isEmpty() || limitField.isEmpty()) {
+            if (functionField.isEmpty() || variableField.isEmpty()) {
                 functionField.setInvalid(functionField.isEmpty());
-                limitField.setInvalid(limitField.isEmpty());
+                variableField.setInvalid(variableField.isEmpty());
                 return;
             }
 
             // Obtener la función y el límite ingresados por el usuario
             String function = functionField.getValue();
-            String limit = limitField.getValue();
+            String limit = variableField.getValue();
 
             // Calcular los pasos del límite utilizando Prolog
-            List<String> steps = calculateLimitSteps(function, limit);
+            List<String> steps = calculateDerivativeSteps(function, limit);
 
             // Agregar cada paso como un elemento de texto separado
             for (String step : steps) {
@@ -110,7 +108,7 @@ public class LimitView extends VerticalLayout {
     }
 
     // Método para calcular los pasos del límite
-    private List<String> calculateLimitSteps(String function, String limit) {
+    private List<String> calculateDerivativeSteps(String function, String variable) {
         // Aquí iría el código para calcular los pasos del límite utilizando Prolog
         // Por ahora, simplemente devolvemos una lista de pasos de ejemplo
         List<String> steps = new ArrayList<>();
@@ -122,14 +120,15 @@ public class LimitView extends VerticalLayout {
     }
 
     // Método para establecer la expresión del límite
-    private String getExpression(String toLimit, String function) {
-        if (toLimit.isBlank())
-            toLimit = "?";
+    private String getExpression(String variable, String function) {
+        if (variable.isBlank())
+            variable = "?";
 
         if (function == null)
             function = "";
 
-        return String.format("lim_{x \\to %s} %s", toLimit, function);
+        return String.format("d/d%s %s", variable, function);
     }
+
 
 }

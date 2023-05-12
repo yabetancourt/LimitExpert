@@ -53,7 +53,7 @@ public class MainLayout extends AppLayout {
         AppNav nav = new AppNav();
 
         nav.addItem(new AppNavItem("Calcular Límites", LimitView.class, LineAwesomeIcon.ARROW_RIGHT_SOLID.create()));
-
+        nav.addItem(new AppNavItem("Calcular Derivadas", DerivativeView.class, LineAwesomeIcon.WAVE_SQUARE_SOLID.create()));
         return nav;
     }
 
