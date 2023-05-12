@@ -4,17 +4,19 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.theme.lumo.LumoUtility;
 import cu.limitexpert.components.MathFormula;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @PageTitle("Calculadora de límites")
 @Route(value = "limit", layout = MainLayout.class)
@@ -22,7 +24,7 @@ import java.util.List;
 public class LimitView extends VerticalLayout {
 
     private final TextField functionField;
-    private final NumberField limitField;
+    private final TextField limitField;
     private final VerticalLayout stepContainer;
 
     public LimitView() {
@@ -32,17 +34,33 @@ public class LimitView extends VerticalLayout {
                 new FormLayout.ResponsiveStep("400px", 6));
         formLayout.setWidthFull();
 
+        // Crear los componentes para introducir los datos
+        Span expression = new Span("Expresión: ");
+        expression.addClassNames(LumoUtility.TextColor.TERTIARY);
+        expression.setVisible(false);
         MathFormula formula = new MathFormula();
+        VerticalLayout expressionLayout = new VerticalLayout(expression, formula);
 
-        // Crear los campos de entrada
         functionField = new TextField("Función:");
         functionField.setWidthFull();
         functionField.setRequired(true);
         functionField.setValueChangeMode(ValueChangeMode.TIMEOUT);
-        functionField.addValueChangeListener(valueChange -> formula.setFormula(functionField.getValue()));
-        limitField = new NumberField("Valor al que tiende x:");
+
+        limitField = new TextField("Valor al que tiende x:");
         limitField.setWidthFull();
         limitField.setRequired(true);
+        limitField.setValueChangeMode(ValueChangeMode.TIMEOUT);
+
+        // Agregar listeners a los campos de entrada
+        functionField.addValueChangeListener(valueChange -> {
+            formula.setFormula(setExpression(limitField.getValue(), functionField.getValue()));
+            expression.setVisible(!Objects.equals(functionField.getValue(), "") || limitField.getValue() != null);
+        });
+
+        limitField.addValueChangeListener(value -> {
+            formula.setFormula(setExpression(limitField.getValue(), functionField.getValue()));
+            expression.setVisible(!Objects.equals(functionField.getValue(), null) || limitField.getValue() != null);
+        });
 
         // Crear el botón de cálculo
         Button calculateButton = new Button("Calcular");
@@ -58,11 +76,12 @@ public class LimitView extends VerticalLayout {
         stepContainer.setWidth("100%");
         stepContainer.setMinHeight("400px");
         stepContainer.setVisible(false); // Ocultar el contenedor al inicio
+        Span procedure = new Span("Procedimiento: ");
+        procedure.addClassNames(LumoUtility.TextColor.TERTIARY);
+        stepContainer.add(procedure);
 
         // Agregar el contenedor a la vista
-        add(formLayout);
-        add(formula);
-        add(stepContainer);
+        add(formLayout, expressionLayout, stepContainer);
 
         // Configuración del botón de cálculo
         calculateButton.addClickListener(event -> {
@@ -75,7 +94,7 @@ public class LimitView extends VerticalLayout {
 
             // Obtener la función y el límite ingresados por el usuario
             String function = functionField.getValue();
-            double limit = limitField.getValue();
+            String limit = limitField.getValue();
 
             // Calcular los pasos del límite utilizando Prolog
             List<String> steps = calculateLimitSteps(function, limit);
@@ -90,7 +109,8 @@ public class LimitView extends VerticalLayout {
         });
     }
 
-    private List<String> calculateLimitSteps(String function, double limit) {
+    // Método para calcular los pasos del límite
+    private List<String> calculateLimitSteps(String function, String limit) {
         // Aquí iría el código para calcular los pasos del límite utilizando Prolog
         // Por ahora, simplemente devolvemos una lista de pasos de ejemplo
         List<String> steps = new ArrayList<>();
@@ -99,6 +119,17 @@ public class LimitView extends VerticalLayout {
         steps.add("Paso 3 ...");
         steps.add("Paso 4 ...");
         return steps;
+    }
+
+    // Método para establecer la expresión del límite
+    private String setExpression(String toLimit, String function) {
+        if (toLimit.isBlank())
+            toLimit = "?";
+
+        if (function == null)
+            function = "";
+
+        return String.format("lim_{x \\to %s} %s", toLimit, function);
     }
 
 }
