@@ -1,5 +1,19 @@
+html {
+  --lumo-primary-color: #6c63ff;
+}
+
 .katex-html {
   display: none;
+}
+
+.image {
+  transform: translateY(-70px);
+}
+
+@media (max-width: 767px) {
+  .image {
+    display: none;
+  }
 }
 
 vaadin-scroller[slot="drawer"] {

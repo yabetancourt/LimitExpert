@@ -3,8 +3,10 @@ package cu.limitexpert.views;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
@@ -78,12 +80,16 @@ public class LimitView extends VerticalLayout {
 
         // Crear el contenedor de los pasos
         stepContainer = new VerticalLayout();
-        stepContainer.setWidth("100%");
+        stepContainer.setWidth("60%");
         stepContainer.setMinHeight("400px");
-        stepContainer.setVisible(false); // Ocultar el contenedor al inicio
-
+        // Ocultar el contenedor al inicio
+        HorizontalLayout bodyLayout = new HorizontalLayout();
+        bodyLayout.setWidthFull();
+        Image image = new Image("../themes/expertoenlmites/images/math.svg", "Math");
+        image.addClassNames("image");
+        bodyLayout.add(stepContainer, image);
         // Agregar el contenedor a la vista
-        add(formLayout, expressionLayout, stepContainer);
+        add(formLayout, expressionLayout, bodyLayout);
 
         // Configuración del botón de cálculo
         calculateButton.addClickListener(event -> {
@@ -109,8 +115,6 @@ public class LimitView extends VerticalLayout {
                 stepContainer.add(new Paragraph(step));
             }
 
-            // Mostrar los pasos en el contenedor
-            stepContainer.setVisible(true);
         });
     }
 
