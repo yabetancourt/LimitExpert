@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 
+import static cu.limitexpert.utils.PrologUtils.consult;
+
 /**
  * The entry point of the Spring Boot application.
  *
@@ -22,6 +24,8 @@ public class Application implements AppShellConfigurator {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+        consult("src/main/prolog/limite.pl");
+        consult("src/main/prolog/derivador.pl");
     }
 
 }

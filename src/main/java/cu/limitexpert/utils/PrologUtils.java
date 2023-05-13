@@ -31,6 +31,18 @@ public class PrologUtils {
         return result;
     }
 
+    public static String limite(String function, String value) {
+        String result = "";
+        Query query = new Query(MessageFormat.format("limite({0}, x, {1}, L)", function, value));
+        if (query.hasSolution()) {
+            Map<String, Term> solution = query.oneSolution();
+            Term derivada = solution.get("L");
+            result = termToString(derivada);
+        }
+        query.close();
+        return result;
+    }
+
     private static String termToString(Term term) {
         if (term.isCompound()) {
             String functor = term.name();
@@ -68,7 +80,7 @@ public class PrologUtils {
 
     public static void main(String[] args) {
         consult("src/main/prolog/derivador.pl");
-        System.out.println(derivar("x^3 - x^2 + 2*x", "x"));
+        System.out.println(derivar("x^3 - x^2 + 2*x + x + sen(x)", "x"));
     }
 
 }

@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static cu.limitexpert.utils.PrologUtils.limite;
+
 @PageTitle("Calculadora de límites")
 @Route(value = "limit", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
@@ -76,9 +78,6 @@ public class LimitView extends VerticalLayout {
         stepContainer.setWidth("100%");
         stepContainer.setMinHeight("400px");
         stepContainer.setVisible(false); // Ocultar el contenedor al inicio
-        Span procedure = new Span("Procedimiento: ");
-        procedure.addClassNames(LumoUtility.TextColor.TERTIARY);
-        stepContainer.add(procedure);
 
         // Agregar el contenedor a la vista
         add(formLayout, expressionLayout, stepContainer);
@@ -98,7 +97,10 @@ public class LimitView extends VerticalLayout {
 
             // Calcular los pasos del límite utilizando Prolog
             List<String> steps = calculateLimitSteps(function, limit);
-
+            stepContainer.removeAll();
+            Span procedure = new Span("Procedimiento: ");
+            procedure.addClassNames(LumoUtility.TextColor.TERTIARY);
+            stepContainer.add(procedure);
             // Agregar cada paso como un elemento de texto separado
             for (String step : steps) {
                 stepContainer.add(new Paragraph(step));
@@ -117,7 +119,7 @@ public class LimitView extends VerticalLayout {
         steps.add("Paso 1 ...");
         steps.add("Paso 2 ...");
         steps.add("Paso 3 ...");
-        steps.add("Paso 4 ...");
+        steps.add(limite(function, limit));
         return steps;
     }
 

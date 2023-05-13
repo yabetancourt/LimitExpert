@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static cu.limitexpert.utils.PrologUtils.consult;
 import static cu.limitexpert.utils.PrologUtils.derivar;
 
 @PageTitle("Calculadora de Derivadas")
@@ -28,9 +27,6 @@ public class DerivativeView extends VerticalLayout {
     private final VerticalLayout stepContainer;
 
     public DerivativeView() {
-
-        consult("src/main/prolog/derivador.pl");
-
         // Crear el formulario
         FormLayout formLayout = new FormLayout();
         formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 1),
