@@ -17,25 +17,49 @@ simplificar_oper(+, A, B + C, S) :-
     (number(A), number(B), R is A + B, S = R + C, !);
     (number(C), number(B), R is C + B, S = R + A, !);
     (number(A), number(C), R is C + A, S = R + B, !);
-    simplificar_oper(+, A, B, S).
+    simplificar_oper(+, A, B, S + C).
 
 simplificar_oper(+, A + B, C, S) :-
     (number(B), number(C), R is B + C, S = R + A, !);
     (number(A), number(C), R is A + C, S = R + B, !);
     (number(A), number(B), R is A - B, S = R + C, !);
-    simplificar_oper(+, B, C, S).
+    simplificar_oper(+, B, C, S + A).
 
 simplificar_oper(*, A, B * C, P) :-
     (number(A), number(B), R is A * B, P = R*C, !);
     (number(C), number(B), R is B * C, P = R*A, !);
     (number(A), number(C), R is A * C, P = R*B, !);
-    simplificar_oper(*, A, B, P).
+    simplificar_oper(*, A, B, P*C).
 
 simplificar_oper(*, A * B, C, P) :-
     (number(B), number(C), R is B * C, P = R * A, !);
     (number(A), number(C), R is A * C, P = R * B, !);
     (number(A), number(B), R is A * B, P = R * C, !);
-    simplificar_oper(*, A, B, P).
+    simplificar_oper(*, A, B, P*C).
+
+simplificar_oper(-, A, B + C, S) :-
+    (number(A), number(B), R is A - B, S = R + C, !);
+    (number(A), number(C), R is A + C, S = R - B, !);
+    (number(B), number(C), R is -B + C, S = R + A, !);
+    simplificar_oper(-, A, B, S + C).
+
+simplificar_oper(-, A + B, C, S) :-
+    (number(A), number(B), R is A + B, S = R + C, !);
+    (number(A), number(C), R is A - C, S = R + B, !);
+    (number(B), number(C), R is B - C, S = A + R, !);
+    simplificar_oper(+, A, B, S - C).
+
+simplificar_oper(-, A, B - C, S) :-
+    (number(A), number(B), R is A - B, S = R - C, !);
+    (number(A), number(C), R is A - C, S = R - B, !);
+    (number(B), number(C), R is -B - C, S = A + R, !);
+    simplificar_oper(-, A, B, S - C).
+
+simplificar_oper(-, A - B, C, S) :-
+    (number(A), number(B), R is A - B, S = R - C, !);
+    (number(A), number(C), R is A - C, S = R - B, !);
+    (number(B), number(C), R is B + C, S = A - R, !);
+    simplificar_oper(-, A, B, S - C).
 
 simplificar_oper(+, 0, B, B).
 
