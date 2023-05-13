@@ -13,14 +13,52 @@ simplificar(F, S) :-
 simplificar(X, X).
 
 % Reglas para simplificar operaciones
+simplificar_oper(+, A, B + C, C + R) :-
+    (number(A), number(B), R is A + B, !);
+    (number(C), number(B), R is C + B, !);
+    (number(A), number(C), R is C + A, !);
+    simplificar_oper(+, A, B, R).
+
+simplificar_oper(+, A + B, C, A + R) :-
+    (number(B), number(C), R is B + C, !);
+    (number(A), number(C), R is A + C, !);
+    (number(A), number(B), R is A - B, !);
+    simplificar_oper(+, B, C, R).
+
 simplificar_oper(+, 0, B, B).
 
 simplificar_oper(+, A, 0, A).
 
+simplificar_oper(+, X, X, 2*X).
+
+simplificar_oper(+, N*X, K*X, S) :-
+    (number(N), number(K), Sum is N + K, S = Sum*X, !);
+    (S = (N + K) * X, !).
+
+simplificar_oper(+, X, K*X, S) :-
+    (number(K), Sum is 1 + K, S = Sum*X, !);
+    (S = (1 + K) * X, !).
+
+simplificar_oper(+, N*X, X, S) :-
+    (number(N), Sum is 1 + N, S = Sum*X, !);
+    (S = (1 + N) * X, !).
+
+simplificar_oper(-, N*X, K*X, S) :-
+    (number(N), number(K), Sum is N - K, S = Sum*X, !);
+    (S = (N - K) * X, !).
+
+simplificar_oper(-, X, K*X, S) :-
+    (number(K), Sum is 1 - K, S = Sum*X, !);
+    (S = (1 - K) * X, !).
+
+simplificar_oper(-, N*X, X, S) :-
+    (number(N), Sum is N - 1, S = Sum*X, !);
+    (S = (N - 1) * X, !).
+
 simplificar_oper(+, A, B, S) :-
     (number(B), number(A), S is A + B , !);
     (S = A + B, !).
-    
+
 simplificar_oper(-, A, A, 0).
 
 simplificar_oper(-, A, B, S) :-
