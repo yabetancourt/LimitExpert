@@ -46,11 +46,14 @@ public class LimitView extends VerticalLayout {
         functionField = new TextField("Función:");
         functionField.setWidthFull();
         functionField.setRequired(true);
+        functionField.setErrorMessage("Por favor llene este campo.");
+        functionField.setPlaceholder("Introduzca la función");
         functionField.setValueChangeMode(ValueChangeMode.TIMEOUT);
 
         limitField = new TextField("Valor al que tiende x:");
         limitField.setWidthFull();
         limitField.setRequired(true);
+        limitField.setErrorMessage("Por favor llene este campo.");
         limitField.setValueChangeMode(ValueChangeMode.TIMEOUT);
 
         // Agregar listeners a los campos de entrada
