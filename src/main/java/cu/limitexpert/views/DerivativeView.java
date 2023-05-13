@@ -3,7 +3,6 @@ package cu.limitexpert.views;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -17,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static cu.limitexpert.utils.PrologUtils.consult;
+import static cu.limitexpert.utils.PrologUtils.derivar;
+
 @PageTitle("Calculadora de Derivadas")
 @Route(value = "derivative", layout = MainLayout.class)
 public class DerivativeView extends VerticalLayout {
@@ -26,6 +28,9 @@ public class DerivativeView extends VerticalLayout {
     private final VerticalLayout stepContainer;
 
     public DerivativeView() {
+
+        consult("src/main/prolog/derivador.pl");
+
         // Crear el formulario
         FormLayout formLayout = new FormLayout();
         formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 1),
@@ -74,9 +79,6 @@ public class DerivativeView extends VerticalLayout {
         stepContainer.setWidth("100%");
         stepContainer.setMinHeight("400px");
         stepContainer.setVisible(false); // Ocultar el contenedor al inicio
-        Span procedure = new Span("Procedimiento: ");
-        procedure.addClassNames(LumoUtility.TextColor.TERTIARY);
-        stepContainer.add(procedure);
 
         // Agregar el contenedor a la vista
         add(formLayout, expressionLayout, stepContainer);
@@ -96,10 +98,13 @@ public class DerivativeView extends VerticalLayout {
 
             // Calcular los pasos del límite utilizando Prolog
             List<String> steps = calculateDerivativeSteps(function, limit);
-
+            stepContainer.removeAll();
+            Span procedure = new Span("Procedimiento: ");
+            procedure.addClassNames(LumoUtility.TextColor.TERTIARY);
+            stepContainer.add(procedure);
             // Agregar cada paso como un elemento de texto separado
             for (String step : steps) {
-                stepContainer.add(new Paragraph(step));
+                stepContainer.add(new MathFormula(step));
             }
 
             // Mostrar los pasos en el contenedor
@@ -116,6 +121,7 @@ public class DerivativeView extends VerticalLayout {
         steps.add("Paso 2 ...");
         steps.add("Paso 3 ...");
         steps.add("Paso 4 ...");
+        steps.add(derivar(function, variable));
         return steps;
     }
 
