@@ -97,11 +97,14 @@ limite_zero(X/Y,V,P,L):-
 	T is Y,
 	((T\=0,limite_div(X/Y,V,P,L));L='division por cero'),!.
 
+limite_div(X/Y,V,infinito,L):-
+	limite(X,V,infinito,LX),
+	limite(Y,V,infinito,LY),
+        (indeterm(LX/LY,_,_,L);(number(LX),LY=infinito,L=0);(number(LX),LY=:=0,L = infinito);(atom(LX),L = LX);(atom(LY),L = LY);(mcd(LX,LY,D),XD is LX/D,YD is LY/D,((YD=:=1,L=XD);L=XD/YD))),!.
 limite_div(X/Y,V,P,L):-
 	limite(X,V,P,LX),
 	limite(Y,V,P,LY),
-        (indeterm(LX/LY,_,_,L);(number(LX),LY=infinito,L=0);(number(LX),LY=:=0,L = infinito);(atom(LX),L = LX);(atom(LY),L = LY);(mcd(LX,LY,D),XD is LX/D,YD is LY/D,((YD=:=1,L=XD);L=XD/YD))),!.
-
+        (indeterm(LX/LY,_,_,L);(LY=:=0,L='division por cero');(atom(LX),L = LX);(atom(LY),L = LY);(mcd(LX,LY,D),XD is LX/D,YD is LY/D,((YD=:=1,L=XD);L=XD/YD))),!.
 cerca_cero(X,0):-
 	abs(X)=<0.00001.
 cerca_cero(X,X):-
