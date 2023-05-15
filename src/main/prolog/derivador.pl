@@ -83,7 +83,13 @@ derivar_oper(+, _, _, DA, DB, DA + DB).
 derivar_oper(-, _, _, DA, DB, DA - DB).
 derivar_oper(*, A, B, DA, DB, DA * B + A * DB).
 derivar_oper(/, A, B, DA, DB, (DA * B - A * DB) / (B * B)).
-derivar_oper(^, A, B, DA, _, B * A ^ (B - 1) * DA).
+
+derivar_oper(^, A, B, DA, DB, D) :-
+    (number(A), number(B), D = 0, !);
+    (number(B), D = B * A ^ (B - 1) * DA, !);
+    (number(A), D = A ^ B * DB, !);
+    (D = e ^ (B * ln(A)) * (1 / A * DA * B + ln(A) * DB)).
+
 derivar_oper(log, B, _, _, DA, D) :-
                   (DA = 0, D = 0, !);
                   D = 1 / (DA * ln(B)).

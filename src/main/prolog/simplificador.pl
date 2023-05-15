@@ -63,41 +63,53 @@ simplificar_oper(-, A - B, C, S) :-
 
 simplificar_oper(+, 0, B, B).
 simplificar_oper(+, A, 0, A).
-simplificar_oper(+, X, X, 2*X).
+simplificar_oper(+, X, X, 2 * X).
 
-simplificar_oper(+, N*X, K*X, S) :-
-    (number(N), number(K), Sum is N + K, S = Sum*X, !);
-    (S = (N + K) * X, !).
+simplificar_oper(+, N * X, K * X, S) :-
+    (number(N), number(K), Sum is N + K, S = Sum * X, !);
+    (simplificar_oper(+, N, K, R), simplificar_oper(*, R, X, S)).
 
-simplificar_oper(+, X, K*X, S) :-
-    (number(K), Sum is 1 + K, S = Sum*X, !);
-    (S = (1 + K) * X, !).
+simplificar_oper(+, X * N, X * K, S) :-
+    (number(N), number(K), Sum is N + K, S = Sum * X, !);
+    (simplificar_oper(+, N, K, R), simplificar_oper(*, R, X, S)).
 
-simplificar_oper(+, N*X, X, S) :-
-    (number(N), Sum is 1 + N, S = Sum*X, !);
-    (S = (1 + N) * X, !).
+simplificar_oper(+, X * N, K * X, S) :-
+    (number(N), number(K), Sum is N + K, S = Sum * X, !);
+    (simplificar_oper(+, N, K, R), simplificar_oper(*, R, X, S)).
 
-simplificar_oper(-, N*X, K*X, S) :-
-    (number(N), number(K), Sum is N - K, S = Sum*X, !);
-    (S = (N - K) * X, !).
+simplificar_oper(+, N * X, X * K, S) :-
+    (number(N), number(K), Sum is N + K, S = Sum * X, !);
+    (simplificar_oper(+, N, K, R), simplificar_oper(*, R, X, S)).
 
-simplificar_oper(-, X, K*X, S) :-
-    (number(K), Sum is 1 - K, S = Sum*X, !);
-    (S = (1 - K) * X, !).
+simplificar_oper(+, X, K * X, S) :-
+    (number(K), Sum is 1 + K, S = Sum * X, !);
+    (S = (1 + K) * X).
 
-simplificar_oper(-, N*X, X, S) :-
-    (number(N), Sum is N - 1, S = Sum*X, !);
-    (S = (N - 1) * X, !).
+simplificar_oper(+, N * X, X, S) :-
+    (number(N), Sum is 1 + N, S = Sum * X, !);
+    (S = (1 + N) * X).
+
+simplificar_oper(-, N * X, K * X, S) :-
+    (number(N), number(K), Sum is N - K, S = Sum * X, !);
+    (S = (N - K) * X).
+
+simplificar_oper(-, X, K * X, S) :-
+    (number(K), Sum is 1 - K, S = Sum * X, !);
+    (S = (1 - K) * X).
+
+simplificar_oper(-, N * X, X, S) :-
+    (number(N), Sum is N - 1, S = Sum * X, !);
+    (S = (N - 1) * X).
 
 simplificar_oper(+, A, B, S) :-
     (number(B), number(A), S is A + B , !);
-    (S = A + B, !).
+    (S = A + B).
 
 simplificar_oper(-, A, A, 0).
 
 simplificar_oper(-, A, B, S) :-
     (number(B), number(A), S is A - B);
-    (S =.. [-, A, B]), !.
+    (S = A - B).
 
 simplificar_oper(*, 0, _, 0).
 simplificar_oper(*, _, 0, 0).
@@ -105,14 +117,14 @@ simplificar_oper(*, 1, B, B).
 simplificar_oper(*, A, 1, A).
 simplificar_oper(*, -1, B, -B).
 simplificar_oper(*, A, -1, -A).
-simplificar_oper(*, A, 1/A, 1).
-simplificar_oper(*, 1/A, A, 1).
+simplificar_oper(*, A, 1 / A, 1).
+simplificar_oper(*, 1 / A, A, 1).
 simplificar_oper(*, A, A ^(-1), 1).
-simplificar_oper(*, A^(-1), A, 1).
+simplificar_oper(*, A ^ (-1), A, 1).
 simplificar_oper(*, 2 * cos(X), sen(X), sen(2 * X)).
 simplificar_oper(*, 2 * sen(X), cos(X), sen(2 * X)).
 simplificar_oper(*, tan(X), cot(X), 1).
-simplificar_oper(*, sen(X), 1/cos(X), tan(X)).
+simplificar_oper(*, sen(X), 1 / cos(X), tan(X)).
 simplificar_oper(*, sen(X), sec(X), tan(X)).
 simplificar_oper(*, sen(X), csc(X), 1).
 simplificar_oper(*, cos(X), sec(X), 1).
