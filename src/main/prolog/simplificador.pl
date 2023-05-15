@@ -62,9 +62,7 @@ simplificar_oper(-, A - B, C, S) :-
     simplificar_oper(-, A, B, S - C).
 
 simplificar_oper(+, 0, B, B).
-
 simplificar_oper(+, A, 0, A).
-
 simplificar_oper(+, X, X, 2*X).
 
 simplificar_oper(+, N*X, K*X, S) :-
@@ -102,18 +100,58 @@ simplificar_oper(-, A, B, S) :-
     (S =.. [-, A, B]), !.
 
 simplificar_oper(*, 0, _, 0).
-
 simplificar_oper(*, _, 0, 0).
-
 simplificar_oper(*, 1, B, B).
-
 simplificar_oper(*, A, 1, A).
+simplificar_oper(*, -1, B, -B).
+simplificar_oper(*, A, -1, -A).
+simplificar_oper(*, A, 1/A, 1).
+simplificar_oper(*, 1/A, A, 1).
+simplificar_oper(*, A, A ^(-1), 1).
+simplificar_oper(*, A^(-1), A, 1).
+simplificar_oper(*, 2 * cos(X), sen(X), sen(2 * X)).
+simplificar_oper(*, 2 * sen(X), cos(X), sen(2 * X)).
+simplificar_oper(*, tan(X), cot(X), 1).
+simplificar_oper(*, sen(X), 1/cos(X), tan(X)).
+simplificar_oper(*, sen(X), sec(X), tan(X)).
+simplificar_oper(*, sen(X), csc(X), 1).
+simplificar_oper(*, cos(X), sec(X), 1).
+simplificar_oper(*, cos(X), csc(X), cot(X)).
+
+simplificar_oper(*, X ^ K, X, X ^ R) :-
+    (number(K), R is K + 1, !);
+    (R = K + 1).
+
+simplificar_oper(*, X, X ^ K, X ^ R) :-
+    (number(K), R is K + 1, !);
+    (R = K + 1).
+
+simplificar_oper(*, X ^ K, X ^ M, X ^ R) :-
+    (number(K), number(M), R is K + M, !);
+    (R = (K + M)).
+
+simplificar_oper(*, A ^ K, B ^ K, R) :-
+    simplificar_oper(*, A, B, P),
+    simplificar_oper(^, P, K, R).
 
 simplificar_oper(*, A, B, S) :-
     (number(B), number(A), S is A * B, !);
     (S =.. [*, A, B]), !.
 
 simplificar_oper(/, A, A, 1).
+simplificar_oper(/, A, 1, A).
+simplificar_oper(/, A * X, X, A).
+simplificar_oper(/, A, A * Y, 1/Y).
+simplificar_oper(/, sen(X), cos(X), tan(X)).
+simplificar_oper(/, -sen(X), cos(X), -tan(X)).
+simplificar_oper(/, -Y * sen(X), cos(X), -Y * tan(X)).
+simplificar_oper(/, cos(X), sen(X), cot(X)).
+simplificar_oper(/, 1, sen(X), csc(X)).
+simplificar_oper(/, 1, cos(X), sec(X)).
+simplificar_oper(/, 1, tan(X), cot(X)).
+
+simplificar_oper(/, A * X, B * X, R) :-
+    simplificar_oper(/, A, B, R).
 
 simplificar_oper(/, A, B, S) :-
     simplificar(A, SA),
@@ -127,7 +165,9 @@ simplificar_oper(^, _, 0, 1).
 simplificar_oper(^, A, 1, A).
 simplificar_oper(^, 0, _, 0).
 simplificar_oper(^, 1, _, 1).
+simplificar_oper(^, A, (-1), 1 / A).
+simplificar_oper(^, A, (-K), 1 / A ^ K).
 
 simplificar_oper(^, A, B, S) :-
      (number(A), number(B), S is A^B , !);
-     (S =.. [^, A, B]), !.
+     (S =.. [^, A, B], !).
