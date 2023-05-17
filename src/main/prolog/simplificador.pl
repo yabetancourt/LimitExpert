@@ -13,7 +13,7 @@ simplificar(F, S) :-
     simplificar(B, SB),
     simplificar_oper(Op, SA, SB, S), !.
 
-%simplificar(X, X).%
+simplificar(X, X).
 
 % Reglas para simplificar operaciones
 simplificar_oper(+, A, B + C, S) :-

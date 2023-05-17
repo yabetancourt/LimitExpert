@@ -5,6 +5,8 @@
 simplificar(X, X) :- atomic(X), !.
 %Puestos por Daly%
 simplificar(X- -Y,X+Y).
+simplificar(X+ -Y,X-Y).
+
 simplificar(F, S) :-
     F =.. [Op, A, B],
     simplificar(A, SA),
