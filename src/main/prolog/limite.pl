@@ -1,3 +1,4 @@
+:- use_module(derivador, [derivar/3]).
 
 %indeterminaciones%
 indeterm(0*infinito,_,_,indeterminado).
@@ -100,7 +101,7 @@ limite_zero(X/Y,V,P,L):-
 limite_div(X/Y,V,P,L):-
 	limite(X,V,P,LX),
 	limite(Y,V,P,LY),
-        (indeterm(LX/LY,_,_,L);(number(LX),LY=infinito,L=0);(number(LX),LY=:=0,L = infinito);(atom(LX),L = LX);(atom(LY),L = LY);(mcd(LX,LY,D),XD is LX/D,YD is LY/D,((YD=:=1,L=XD);L=XD/YD))),!.
+        ((indeterm(LX/LY,_,_,_),limite_LH(X/Y,V,P,L));(number(LX),LY=infinito,L=0);(number(LX),LY=:=0,L = infinito);(atom(LX),L = LX);(atom(LY),L = LY);(mcd(LX,LY,D),XD is LX/D,YD is LY/D,((YD=:=1,L=XD);L=XD/YD))),!.
 
 cerca_cero(X,0):-
 	abs(X)=<0.00001.
@@ -116,6 +117,14 @@ mcd(X,Y,D):-
 	X<Y,
 	LX is Y-X,
 	mcd(X,LX,D).
+
+limite_LH(X/Y,V,P,L):-
+	derivar(X,V,DX),
+	derivar(Y,V,DY),
+	limite(DX/DY,V,P,L).
+
+
+
 
 
 

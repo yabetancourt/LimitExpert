@@ -1,4 +1,4 @@
-:- module(derivador,[derivar/3]).
+
 :- use_module(simplificador, [simplificar/2]).
 
 derivar(F, X, DF) :-
