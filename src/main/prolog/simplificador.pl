@@ -3,8 +3,6 @@
 
 % Reglas para simplificar expresiones
 simplificar(X, X) :- atomic(X), !.
-%Puestos por Daly%
-simplificar(X- -Y,X+Y).
 simplificar(X+ -Y,X-Y).
 
 simplificar(F, S) :-
@@ -15,7 +13,25 @@ simplificar(F, S) :-
 
 simplificar(X, X).
 
-% Reglas para simplificar operaciones
+% Reglas para simplificar operaciones%
+% Puestas por Daly%
+simplificar_oper(-,A,-Y,S):-
+    A=:=0,
+    S=Y.
+simplificar_oper(-,A,-Y,S):-
+    A\=0,
+    S=A+Y.
+simplificar_oper(+,A,-Y,S):-
+    A=:=0,
+    S= -Y.
+simplificar_oper(+,A,-Y,S):-
+    A\=0,
+    S= A-Y.
+simplificar_oper(*,-A,B,S):-
+    not(B= -Y),
+    S= -(A*B).
+
+
 simplificar_oper(+, A, B + C, S) :-
     (number(A), number(B), R is A + B, simplificar_oper(+, R, C, S), !);
     (number(C), number(B), R is C + B, simplificar_oper(+, R, A, S), !);
