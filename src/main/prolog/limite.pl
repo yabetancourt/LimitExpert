@@ -1,12 +1,12 @@
 :- use_module(derivador, [derivar/3]).
 
 %indeterminaciones%
-indeterm(0*infinito,_,_,indeterminado).
-indeterm(infinito*0,_,_,indeterminado).
+indeterm(X*infinito,_,_,indeterminado):-X=:=0.
+indeterm(infinito*X,_,_,indeterminado):-X=:=0.
 indeterm(infinito/infinito,_,_,indeterminado).
-indeterm(1^infinito,_,_,indeterminado).
-indeterm(0^0,_,_,indeterminado).
-indeterm(0/0,_,_,indeterminado).
+indeterm(X^infinito,_,_,indeterminado):-X=:=1.
+indeterm(X^Y,_,_,indeterminado):-X=:=0,Y=:=0.
+indeterm(X/Y,_,_,indeterminado):-X=:=0,Y=:=0.
 indeterm(infinito-infinito,_,_,indeterminado).
 
 %limites bases%
@@ -51,7 +51,7 @@ limite(X^Y,V,P,L):-
         limite(X,V,P,LX),
 	(indeterm(LX^LY,_,_,L);(atom(LX),L = LX);(atom(LY),L = LY);L is LX^LY),!.
 %limites trigonometricos%
-limite(sin(X),V,P,L):-
+limite(sen(X),V,P,L):-
 	limite(X,V,P,LX),
 	((atom(LX),L=LX);(LT is sin(LX),cerca_cero(LT,L))),!.
 
@@ -63,7 +63,7 @@ limite(tan(X),V,P,L):-
 	limite(X,V,P,LX),
 	((atom(LX),L=LX);(LT is tan(LX),cerca_cero(LT,L))),!.
 
-limite(asin(X),V,P,L):-
+limite(asen(X),V,P,L):-
 	limite(X,V,P,LX),
 	((atom(LX),L=LX);(LT is asin(LX),cerca_cero(LT,L))),!.
 
@@ -86,7 +86,7 @@ limite(sqrt(X),V,P,L):-
 	((atom(LX),L=LX);(L is sqrt(LX))),!.
 
 %limite con logaritmos base 10 y log natural%
-limite(log(X),V,P,L):-
+limite(ln(X),V,P,L):-
 	limite(X,V,P,LX),
 	((LX=<0,L=indeterminado);L is log(LX)),!.
 limite(log10(X),V,P,L):-
@@ -108,6 +108,7 @@ cerca_cero(X,0):-
 cerca_cero(X,X):-
 	abs(X)>0.00001.
 %mcd%
+mcd(0,_,1).
 mcd(X,X,X).
 mcd(X,Y,D):-
 	X>Y,
