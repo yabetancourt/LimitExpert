@@ -2,6 +2,7 @@ package cu.limitexpert.views;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
@@ -15,6 +16,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import cu.limitexpert.components.MathFormula;
+import org.jpl7.PrologException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,7 @@ public class LimitView extends VerticalLayout {
         functionField.setWidthFull();
         functionField.setRequired(true);
         functionField.setErrorMessage("Por favor llene este campo.");
+        functionField.setClearButtonVisible(true);
         functionField.setPlaceholder("Introduzca la función");
         functionField.setValueChangeMode(ValueChangeMode.TIMEOUT);
 
@@ -123,10 +126,20 @@ public class LimitView extends VerticalLayout {
         // Aquí iría el código para calcular los pasos del límite utilizando Prolog
         // Por ahora, simplemente devolvemos una lista de pasos de ejemplo
         List<String> steps = new ArrayList<>();
-        steps.add("Paso 1 ...");
-        steps.add("Paso 2 ...");
-        steps.add("Paso 3 ...");
-        steps.add(limite(function, limit));
+        try {
+            steps.add("Paso 1 ...");
+            steps.add("Paso 2 ...");
+            steps.add("Paso 3 ...");
+            steps.add(limite(function, limit));
+        } catch (PrologException exception) {
+            ConfirmDialog dialog = new ConfirmDialog();
+            dialog.setHeader("Error");
+            dialog.setConfirmText("Aceptar");
+            dialog.setCancelable(false);
+            dialog.setText(exception.getMessage());
+            dialog.open();
+        }
+
         return steps;
     }
 

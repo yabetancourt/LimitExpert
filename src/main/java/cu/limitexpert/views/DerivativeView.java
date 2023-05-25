@@ -47,6 +47,7 @@ public class DerivativeView extends VerticalLayout {
         functionField.setRequired(true);
         functionField.setErrorMessage("Por favor llene este campo.");
         functionField.setPlaceholder("Introduzca la función");
+        functionField.setClearButtonVisible(true);
         functionField.setValueChangeMode(ValueChangeMode.TIMEOUT);
 
         variableField = new TextField("Derivar respecto a: ");

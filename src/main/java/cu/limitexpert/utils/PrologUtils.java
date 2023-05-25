@@ -36,8 +36,8 @@ public class PrologUtils {
         Query query = new Query(MessageFormat.format("limite({0}, x, {1}, L)", function, value));
         if (query.hasSolution()) {
             Map<String, Term> solution = query.oneSolution();
-            Term derivada = solution.get("L");
-            result = termToString(derivada);
+            Term limite = solution.get("L");
+            result = termToString(limite);
         }
         query.close();
         return result;
@@ -45,6 +45,7 @@ public class PrologUtils {
 
     private static String termToString(Term term) {
         if (term.isCompound()) {
+            System.out.println(term);
             String functor = term.name();
             Term[] args = term.args();
 
@@ -53,22 +54,42 @@ public class PrologUtils {
                     return termToString(args[0]) + " + " + termToString(args[1]);
                 }
                 case "-" -> {
-                    return termToString(args[0]) + " - " + termToString(args[1]);
+                    if (args.length == 1) {
+                        return "-(" + termToString(args[0]) + ")";
+                    } else {
+                        return "(" + termToString(args[0]) + ") - (" + termToString(args[1]) + ")";
+                    }
                 }
                 case "*" -> {
-                    return termToString(args[0]) + " * " + termToString(args[1]);
+                    return "(" + termToString(args[0]) + ")" + " * (" + termToString(args[1]) + ")";
                 }
                 case "/" -> {
-                    return termToString(args[0]) + " / " + termToString(args[1]);
+                    return "(" + termToString(args[0])  + ") / (" + termToString(args[1]) + ")";
                 }
                 case "^" -> {
-                    return termToString(args[0]) + " ^ " + termToString(args[1]);
+                    return "(" + termToString(args[0]) + ") ^ (" +termToString(args[1]) + ")";
+                }
+                case "sen" -> {
+                    return "sen(" + termToString(args[0]) + ")";
+                }
+                case "cos" -> {
+                    return "cos(" + termToString(args[0]) + ")";
+                }
+                case "tan" -> {
+                    return "tan(" + termToString(args[0]) + ")";
+                }
+                case "log" -> {
+                    return "log(" + termToString(args[0]) + ")";
+                }
+                case "ln" -> {
+                    return "ln(" + termToString(args[0]) + ")";
                 }
                 default -> {
+                    return functor + "(" + termToString(args[0]) + ")";
                 }
                 //más casos para otros operadores si es necesario
             }
-        } else if (term.isInteger()) {
+        } else if (term.isInteger() || term.isFloat()) {
             return term.toString();
         } else if (term.isVariable() || term.isAtom()) {
             return term.name();
@@ -76,6 +97,8 @@ public class PrologUtils {
 
         return "";
     }
+
+
 
 
     public static void main(String[] args) {
