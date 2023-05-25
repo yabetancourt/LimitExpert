@@ -31,8 +31,13 @@ derivada(tan(X), X, 1 / cos(X) ^ 2) :- atomic(X), !.
 derivada(tan(X), Y, (1 / cos(X) ^ 2) * DF) :- derivada(X, Y, DF).
 
 derivada(ln(X), _, 0) :- number(X), !.
-derivada(ln(X), X, 1/X) :- atomic(X), !.
-derivada(ln(X), Y, (1 / X) * DF) :- derivada(X, Y, DF).
+derivada(ln(X), X, 1/(X)) :- atomic(X), !.
+derivada(ln(X), Y, (1 / (X)) * DF) :- derivada(X, Y, DF).
+
+derivada(log(X), _, 0) :- number(X), !.
+derivada(log(X), X, 1 / (X) * ln(10)) :- atomic(X), !.
+derivada(log(X), Y, (1 / (X)) * ln(10) * DF) :- derivada(X, Y, DF).
+
 
 derivada(cot(X), _, 0) :- number(X), !.
 derivada(cot(X), X, -(1 / sen(X) ^ 2)) :- atomic(X), !.
