@@ -1,5 +1,6 @@
 package cu.limitexpert.views;
 
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
@@ -75,6 +76,7 @@ public class LimitView extends VerticalLayout {
         // Crear el botón de cálculo
         Button calculateButton = new Button("Calcular");
         calculateButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        calculateButton.addClickShortcut(Key.ENTER);
 
         // Agregar los componentes al formulario
         formLayout.add(functionField, 4);
