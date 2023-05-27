@@ -1,14 +1,20 @@
 package cu.limitexpert.views;
 
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Header;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.Scroller;
+import com.vaadin.flow.dom.ThemeList;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.theme.lumo.Lumo;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import cu.limitexpert.components.AppNav;
 import cu.limitexpert.components.AppNavItem;
@@ -33,8 +39,21 @@ public class MainLayout extends AppLayout {
 
         viewTitle = new H2();
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
+        Button toggleButton = new Button(VaadinIcon.MOON_O.create());
+        toggleButton.addClickListener(click -> {
+                ThemeList themeList = UI.getCurrent().getElement().getThemeList();
 
-        addToNavbar(true, toggle, viewTitle);
+                if (themeList.contains(Lumo.DARK)) {
+                    themeList.remove(Lumo.DARK);
+                    toggleButton.setIcon(VaadinIcon.MOON_O.create());
+                } else {
+                    themeList.add(Lumo.DARK);
+                    toggleButton.setIcon(LineAwesomeIcon.SUN.create());
+                }
+        });
+        toggleButton.addClassNames(LumoUtility.Margin.Left.AUTO, LumoUtility.Padding.Right.LARGE);
+        toggleButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+        addToNavbar(true, toggle, viewTitle, toggleButton);
     }
 
     private void addDrawerContent() {
@@ -59,9 +78,7 @@ public class MainLayout extends AppLayout {
     }
 
     private Footer createFooter() {
-        Footer layout = new Footer();
-
-        return layout;
+        return new Footer();
     }
 
     @Override
