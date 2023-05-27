@@ -111,7 +111,9 @@ aproximar(X,A):-
 	atom_number(NA,A).
 %mcd%
 mcd(0,_,1).
-mcd(X,X,X).
+mcd(0.0,_,1).
+
+mcd(X,Y,Z):-X=:=Y,!,Z=X.
 mcd(-X,Y,D):-
 	mcd(X,Y,D).
 mcd(X,-Y,D):-
