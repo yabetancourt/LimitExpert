@@ -9,9 +9,14 @@ public class Step {
 
     private final MathFormula formula;
 
+    private Paragraph implication;
+
     public Step(String description, String formula) {
         this.description = new Paragraph(description);
         this.formula = new MathFormula(formula);
+        if (description.contains("Regla de la cadena")){
+            implication = new Paragraph("Sabiendo que: ");
+        }
     }
 
     public MathFormula getFormula() {
@@ -20,5 +25,9 @@ public class Step {
 
     public Paragraph getDescription() {
         return description;
+    }
+
+    public Paragraph getImplication() {
+        return implication;
     }
 }

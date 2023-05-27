@@ -115,6 +115,9 @@ public class DerivativeView extends VerticalLayout {
             // Agregar cada paso como un elemento de texto separado
             for (Step step : steps) {
                 stepContainer.add(step.getDescription(), step.getFormula());
+                if (step.getImplication() != null){
+                    stepContainer.add(step.getImplication());
+                }
             }
 
         });
