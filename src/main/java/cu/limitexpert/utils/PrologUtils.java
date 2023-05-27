@@ -5,6 +5,8 @@ import org.jpl7.Query;
 import org.jpl7.Term;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class PrologUtils {
@@ -16,7 +18,7 @@ public class PrologUtils {
 
     public static String derivar(String function, String variable) {
         String result = "";
-        Query query = new Query(MessageFormat.format("derivar({0}, {1}, D)", function, variable));
+        Query query = new Query(MessageFormat.format("derivar({0}, {1}, D, _)", function, variable));
         if (query.hasSolution()) {
             // Obtener la solución de la consulta
             Map<String, Term> solution = query.oneSolution();
@@ -26,6 +28,21 @@ public class PrologUtils {
 
             // Convertir el valor en una cadena de texto
             result = termToString(derivada);
+        }
+        query.close();
+        return result;
+    }
+
+    public static List<List<String>> derivadaPasos(String function, String variable) {
+        List<List<String>> result = new ArrayList<>();
+        Query query = new Query(MessageFormat.format("derivar({0}, {1}, D, P)", function, variable));
+        if (query.hasSolution()) {
+            // Obtener la solución de la consulta
+            Map<String, Term> solution = query.oneSolution();
+
+            // Obtener el término que representa la función derivada
+            Term pasos = solution.get("P");
+            result = listToString(pasos);
         }
         query.close();
         return result;
@@ -42,6 +59,34 @@ public class PrologUtils {
         query.close();
         return result;
     }
+
+    private static List<List<String>> listToString(Term term) {
+        List<List<String>> result = new ArrayList<>();
+
+        if (term.isList()) {
+            Term[] list = term.listToTermArray();
+            System.out.println(list.length);
+            for (Term t : list) {
+                result.add(tupleToString(t));
+            }
+        }
+
+        return result;
+    }
+
+    private static List<String> tupleToString(Term term) {
+        List<String> result = new ArrayList<>();
+
+        if (term.arity() == 2) {
+            Term arg1 = term.arg(1);
+            Term arg2 = term.arg(2);
+            result.add(termToString(arg1));
+            result.add(termToString(arg2));
+        }
+
+        return result;
+    }
+
 
     private static String termToString(Term term) {
         if (term.isCompound()) {
@@ -89,21 +134,17 @@ public class PrologUtils {
                 }
                 //más casos para otros operadores si es necesario
             }
-        } else if (term.isInteger() || term.isFloat()) {
-            return term.toString();
         } else if (term.isVariable() || term.isAtom()) {
             return term.name();
+        } else {
+            return term.toString();
         }
-
-        return "";
     }
-
-
 
 
     public static void main(String[] args) {
         consult("src/main/prolog/derivador.pl");
-        System.out.println(derivar("x^3 - x^2 + 2*x + x + sen(x)", "x"));
+        System.out.println(derivar("x", "x"));
     }
 
 }

@@ -14,11 +14,13 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import cu.limitexpert.components.MathFormula;
+import cu.limitexpert.utils.Step;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static cu.limitexpert.utils.PrologUtils.derivadaPasos;
 import static cu.limitexpert.utils.PrologUtils.derivar;
 
 @PageTitle("Calculadora de Derivadas")
@@ -105,29 +107,28 @@ public class DerivativeView extends VerticalLayout {
             String limit = variableField.getValue();
 
             // Calcular los pasos del límite utilizando Prolog
-            List<String> steps = calculateDerivativeSteps(function, limit);
+            List<Step> steps = calculateDerivativeSteps(function, limit);
             stepContainer.removeAll();
             Span procedure = new Span("Procedimiento: ");
             procedure.addClassNames(LumoUtility.TextColor.TERTIARY);
             stepContainer.add(procedure);
             // Agregar cada paso como un elemento de texto separado
-            for (String step : steps) {
-                stepContainer.add(new MathFormula(step));
+            for (Step step : steps) {
+                stepContainer.add(step.getDescription(), step.getFormula());
             }
 
         });
     }
 
     // Método para calcular los pasos del límite
-    private List<String> calculateDerivativeSteps(String function, String variable) {
-        // Aquí iría el código para calcular los pasos del límite utilizando Prolog
-        // Por ahora, simplemente devolvemos una lista de pasos de ejemplo
-        List<String> steps = new ArrayList<>();
-        steps.add("Paso 1 ...");
-        steps.add("Paso 2 ...");
-        steps.add("Paso 3 ...");
-        steps.add("Paso 4 ...");
-        steps.add(derivar(function, variable));
+    private List<Step> calculateDerivativeSteps(String function, String variable) {
+
+        List<Step> steps = new ArrayList<>();
+        List<List<String>> pasos = derivadaPasos(function, variable);
+        for (List<String> list : pasos) {
+            steps.add(new Step(list.get(0), list.get(1)));
+        }
+        steps.add(new Step("Solución:", derivar(function, variable)));
         return steps;
     }
 
