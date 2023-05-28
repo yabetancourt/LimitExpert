@@ -1,4 +1,4 @@
-:- use_module(derivador, [derivar/3]).
+:- use_module(derivador, [derivar/4]).
 
 %indeterminaciones%
 indeterm(X*infinito,_,_,indeterminado):-X=:=0.
@@ -24,10 +24,11 @@ limite(-X,V,P,L):-
 limite((1+1/X)**X,X,infinito,e).
 
 %limite del producto%
-limite(X*Y,V,P,L):-
-	limite(X,V,P,LX),
-	limite(Y,V,P,LY),
-	(indeterm(LX*LY,_,_,L);(atom(LX),L = LX);(atom(LY),L = LY);L is	LX*LY),!.
+limite(X*Y,V,P,L,Pasos):-
+	limite(X,V,P,LX,Pasos1),
+	limite(Y,V,P,LY,Pasos2),
+	(indeterm(LX*LY,_,_,L);(atom(LX),L = LX);(atom(LY),L = LY);L is	LX*LY),
+	append(Pasos1,Pasos2,Aux),append(Aux,[('Límite del producto',L)],Pasos),!.
 
 %limite de la suma%
 limite(X+Y,V,P,L):-
@@ -111,6 +112,8 @@ aproximar(X,A):-
 	atom_number(NA,A).
 %mcd%
 mcd(0,_,1).
+mcd(0.0,_,1).
+
 mcd(X,Y,Z):-X=:=Y,!,Z=X.
 mcd(-X,Y,D):-
 	mcd(X,Y,D).
@@ -126,8 +129,8 @@ mcd(X,Y,D):-
 	mcd(X,LX,D).
 
 limite_LH(X/Y,V,P,L):-
-	derivar(X,V,DX),
-	derivar(Y,V,DY),
+	derivar(X,V,DX,_),
+	derivar(Y,V,DY,_),
 	limite(DX/DY,V,P,L).
 
 

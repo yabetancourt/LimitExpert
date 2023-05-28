@@ -108,10 +108,10 @@ derivada(tanh(X), Y, DF * 1 / (cosh(X) ^ 2), Pasos) :-
     append([('Derivada de la tangente hiperb√≥lica y Regla de la cadena', DF * 1 / (cosh(X) ^ 2))], Pasos1, Pasos).
 
 derivada(coth(X), _, 0, [('Derivada de una constante', 0)]) :- number(X), !.
-derivada(coth(X), X, -(1 / (senh(X) ^ 2)), [('Derivada de la tangente hiperb√≥lica',-(1 / (senh(X) ^ 2))]) :- atom(X), !.
+derivada(coth(X), X, -(1 / (senh(X) ^ 2)), [('Derivada de la tangente hiperbÛlica'),-(1 / (senh(X) ^ 2))]) :- atom(X), !.
 derivada(coth(X), Y, -(1 / (senh(X) ^ 2)) * DF) :-
     derivada(X, Y, DF, Pasos1),
-    append([('Derivada de la cotangente hiperb√≥lica y Regla de la cadena', -(1 / (senh(X) ^ 2)) * DF)], Pasos1, Pasos).
+    append([('Derivada de la cotangente hiperbÛlica y Regla de la cadena', -(1 / (senh(X) ^ 2)) * DF)], Pasos1, Pasos).
 
 derivar_oper(+, _, _, DA, DB, DA + DB, [('Suma de derivadas', DA + DB)]).
 derivar_oper(-, _, _, DA, DB, DA - DB, [('Resta de derivadas', DA - DB)]).
