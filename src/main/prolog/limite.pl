@@ -10,8 +10,9 @@ indeterm(X/Y,_,_,indeterminado):-X=:=0.0,Y=:=0.0.
 indeterm(infinito-infinito,_,_,indeterminado).
 
 %limites bases%
+limite(pi,_,_,3.1416,[('Límite de pi',3.1416)]).
 limite(e,_,_,2.7183,[('Constante de Euler',2.7183)]).
-
+limite(X,X,pi,3.1416,[('Límite de una variable que se aproxima a un punto',3.1416)]).
 limite(X,X,P,P,[('Límite de una variable que se aproxima a un punto',P)]).
 
 limite(X,_,_,L,[('Límite de una constante',X)]):-
@@ -29,14 +30,14 @@ limite((1+1/X)**X,X,infinito,e,[('Límite fundamental algebraico',e)]).
 limite(X*Y,V,P,L,Pasos):-
 	limite(X,V,P,LX,Pasos1),
 	limite(Y,V,P,LY,Pasos2),
-	(indeterm(LX*LY,_,_,L);(atom(LX),L = LX);(atom(LY),L = LY);L is	LX*LY),!,
+	(indeterm(LX*LY,_,_,L);(atom(LX),L = LX);(atom(LY),L = LY);(LA is LX*LY,aproximar(LA,L))),!,
 	append(Pasos1,Pasos2,Aux),append(Aux,[('Límite del producto',L)],Pasos).
 
 %limite de la suma%
 limite(X+Y,V,P,L,Pasos):-
 	limite(X,V,P,LX,Pasos1),
 	limite(Y,V,P,LY,Pasos2),
-	((atom(LX),L = LX);(atom(LY),L = LY);L is LX+LY),!,
+	((atom(LX),L = LX);(atom(LY),L = LY);(LA is LX+LY,aproximar(LA,L))),!,
       append(Pasos1,Pasos2,Aux),append(Aux,[('Límite de la suma',L)],Pasos).
 
 
@@ -44,7 +45,7 @@ limite(X+Y,V,P,L,Pasos):-
 limite(X-Y,V,P,L,Pasos):-
 	limite(X,V,P,LX,Pasos1),
 	limite(Y,V,P,LY,Pasos2),
-        (indeterm(LX-LY,_,_,L);(atom(LX),L = LX);(atom(LY),L = LY);L is	LX-LY),!,
+        (indeterm(LX-LY,_,_,L);(atom(LX),L = LX);(atom(LY),L = LY);(LA is LX-LY,aproximar(LA,L))),!,
        append(Pasos1,Pasos2,Aux),append(Aux,[('Límite de la resta',L)],Pasos).
 
 
@@ -65,43 +66,42 @@ limite(X^Y,V,P,L,Pasos):-
 %limites trigonometricos%
 limite(sen(X),V,P,L,Pasos):-
 	limite(X,V,P,LX,Pasos1),
-	((atom(LX),L=LX);(LT is sin(LX),aproximar(LT,L))),!,
-	append(Pasos1,[('Límite del seno',L)],Pasos).
+	((atom(LX),L=LX);(LT is sin(LX),aproximar(LT,LA),((LA =:= -0.0,L=0.0);L=LA),!)),!,append(Pasos1,[('Límite del seno',L)],Pasos).
 
 limite(cos(X),V,P,L,Pasos):-
 	limite(X,V,P,LX,Pasos1),
-	((atom(LX),L=LX);(LT is cos(LX),aproximar(LT,L))),!,
+	((atom(LX),L=LX);(LT is cos(LX),aproximar(LT,LA),((LA =:= -0.0,L=0.0);L=LA),!)),!,
 	append(Pasos1,[('Límite del coseno',L)],Pasos).
 
 
 limite(tan(X),V,P,L,Pasos):-
 	limite(X,V,P,LX,Pasos1),
-	((atom(LX),L=LX);(LT is tan(LX),aproximar(LT,L))),!,
+	((atom(LX),L=LX);(LT is tan(LX),aproximar(LT,LA),((LA =:= -0.0,L=0.0);L=LA),!)),!,
 	append(Pasos1,[('Límite de la tangente',L)],Pasos).
 
 
 limite(asen(X),V,P,L,Pasos):-
 	limite(X,V,P,LX,Pasos1),
-	((atom(LX),L=LX);(LT is asin(LX),aproximar(LT,L))),!,
+	((atom(LX),L=LX);(LT is asin(LX),aproximar(LT,LA),((LA =:= -0.0,L=0.0);L=LA),!)),!,
 	append(Pasos1,[('Límite del arcoseno',L)],Pasos).
 
 
 limite(acos(X),V,P,L,Pasos):-
 	limite(X,V,P,LX,Pasos1),
-	((atom(LX),L=LX);(LT is acos(LX),aproximar(LT,L))),!,
+	((atom(LX),L=LX);(LT is acos(LX),aproximar(LT,LA),((LA =:= -0.0,L=0.0);L=LA),!)),!,
 	append(Pasos1,[('Límite del arcocoseno',L)],Pasos).
 
 
 limite(atan(X),V,P,L,Pasos):-
 	limite(X,V,P,LX,Pasos1),
-	((atom(LX),L=LX);(LT is atan(LX),aproximar(LT,L))),!,
+	((atom(LX),L=LX);(LT is atan(LX),aproximar(LT,LA),((LA =:= -0.0,L=0.0);L=LA),!)),!,
 	append(Pasos1,[('Límite del arcotangente',L)],Pasos).
 
 
 %Limite del modulo%
 limite(abs(X),V,P,L,Pasos):-
 	limite(X,V,P,LX,Pasos1),
-	((atom(LX),L=LX);(L is abs(LX))),!,
+	((atom(LX),L=LX);(LA is abs(LX),aproximar(LA,L))),!,
 	append(Pasos1,[('Límite del módulo',L)],Pasos).
 
 
@@ -137,7 +137,7 @@ limite_div(X/Y,V,P,L,Pasos):-
 	(number(LX),LY=:=0,L = infinito,append(Pasos1,Pasos2,Aux),append(Aux,[('Límite de la división',L)],Pasos));
 	(atom(LX),L = LX,append(Pasos1,Pasos2,Aux),append(Aux,[('Límite de la división',L)],Pasos));
 	(atom(LY),L = LY,append(Pasos1,Pasos2,Aux),append(Aux,[('Límite de la división',L)],Pasos));
-	(mcd(LX,LY,D),XD is LX/D,YD is LY/D,((YD=:=1,L=XD);L=XD/YD),!,append(Pasos1,Pasos2,Aux),append(Aux,[('Hallando mcd y dividiendo',L)],Pasos))),!.
+	(mcd(LX,LY,D),XD is LX/D,YD is LY/D,aproximar(XD,AX),aproximar(YD,AY),((AY=:=1.0,L=AX);L=AX/AY),!,append(Pasos1,Pasos2,Aux),append(Aux,[('Hallando mcd y dividiendo',L)],Pasos))),!.
 
 aproximar(X,A):-
 	format(atom(NA),'~1f',X),
@@ -145,20 +145,25 @@ aproximar(X,A):-
 %mcd%
 mcd(0,_,1).
 mcd(0.0,_,1).
+mcd(_,0,1).
+mcd(_,0.0,1).
 
 mcd(X,Y,Z):-X=:=Y,!,Z=X.
-mcd(-X,Y,D):-
-	mcd(X,Y,D).
-mcd(X,-Y,D):-
-	mcd(X,Y,D).
+mcd(X,Y,D):-
+	(X<0;Y<0),!,
+	AX is abs(X),
+	YX is abs(Y),
+	mcd(AX,YX,D).
 mcd(X,Y,D):-
 	X>Y,
 	LX is X-Y,
-	mcd(LX,Y,D).
+	aproximar(LX,AX),
+	mcd(AX,Y,D).
 mcd(X,Y,D):-
 	X<Y,
 	LX is Y-X,
-	mcd(X,LX,D).
+	aproximar(LX,AX),
+	mcd(X,AX,D).
 
 limite_LH(X/Y,V,P,L):-
 	derivar(X,V,DX,_),
