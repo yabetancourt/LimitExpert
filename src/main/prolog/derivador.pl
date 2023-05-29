@@ -6,10 +6,10 @@ derivar(F, X, DF, Pasos) :-
     simplificar(D, DF).
 
 derivada(F, X, DF, Pasos) :-
-    F =.. [Op, A, B], % Descomponer la expresi贸n en dos t茅rminos
+    F =.. [Op, A, B], % Descomponer la expresi髇 en dos t茅rminos
     derivada(A, X, DA, Pasos1),
     derivada(B, X, DB, Pasos2),
-    derivar_oper(Op, A, B, DA, DB, DF, Pasos3), % Aplicar la regla de derivaci贸n para la operaci贸n
+    derivar_oper(Op, A, B, DA, DB, DF, Pasos3), % Aplicar la regla de derivaci髇 para la operaci髇
     append(Pasos1, Pasos2, Aux), append(Aux, Pasos3, Pasos), !. % Agregar los nuevos pasos a la lista de pasos
 
 derivada(C, _, 0, [('Derivada de una constante', 0)]) :- number(C), !.
@@ -90,22 +90,22 @@ derivada(arccot(X), Y, -(1 / (1 + (X ^ 2))) * DF, Pasos) :-
     append([('Derivada del arcocotangente y Regla de la cadena', -(1 / (1 + (X ^ 2))) * DF)], Pasos1, Pasos).
 
 derivada(senh(X), _, 0, [('Derivada de una constante', 0)]) :- number(X), !.
-derivada(senh(X), X, cosh(X), [('Derivada del seno hiperb贸lico', cosh(X))]) :- atom(X), !.
+derivada(senh(X), X, cosh(X), [('Derivada del seno hiperb髄ico', cosh(X))]) :- atom(X), !.
 derivada(senh(X), Y, cosh(X) * DF, Pasos) :-
     derivada(X, Y, DF, Pasos1),
-    append([('Derivada del seno hiperb贸lico y Regla de la cadena', -(1 / (1 + (X ^ 2))) * DF)], Pasos1, Pasos).
+    append([('Derivada del seno hiperb髄ico y Regla de la cadena', -(1 / (1 + (X ^ 2))) * DF)], Pasos1, Pasos).
 
 derivada(cosh(X), _, 0, [('Derivada de una constante', 0)]) :- number(X), !.
-derivada(cosh(X), X,  senh(X), [('Derivada del coseno hiperb贸lico', senh(X))]) :- atom(X), !.
+derivada(cosh(X), X,  senh(X), [('Derivada del coseno hiperb髄ico', senh(X))]) :- atom(X), !.
 derivada(cosh(X), Y, senh(X) * DF, Pasos):-
     derivada(X, Y, DF, Pasos1),
-    append([('Derivada del coseno hiperb贸lico y Regla de la cadena', -(1 / (1 + (X ^ 2))) * DF)], Pasos1, Pasos).
+    append([('Derivada del coseno hiperb髄ico y Regla de la cadena', -(1 / (1 + (X ^ 2))) * DF)], Pasos1, Pasos).
 
 derivada(tanh(X), _, 0, [('Derivada de una constante', 0)]) :- number(X), !.
-derivada(tanh(X), X, 1 / (cosh(X) ^ 2), [('Derivada de la tangente hiperb贸lica', 1 / (cosh(X) ^ 2))]) :- atom(X), !.
+derivada(tanh(X), X, 1 / (cosh(X) ^ 2), [('Derivada de la tangente hiperb髄ica', 1 / (cosh(X) ^ 2))]) :- atom(X), !.
 derivada(tanh(X), Y, DF * 1 / (cosh(X) ^ 2), Pasos) :-
     derivada(X, Y, DF, Pasos1),
-    append([('Derivada de la tangente hiperb贸lica y Regla de la cadena', DF * 1 / (cosh(X) ^ 2))], Pasos1, Pasos).
+    append([('Derivada de la tangente hiperb髄ica y Regla de la cadena', DF * 1 / (cosh(X) ^ 2))], Pasos1, Pasos).
 
 derivada(coth(X), _, 0, [('Derivada de una constante', 0)]) :- number(X), !.
 derivada(coth(X), X, -(1 / (senh(X) ^ 2)), [('Derivada de la tangente hiperb髄ica'),-(1 / (senh(X) ^ 2))]) :- atom(X), !.

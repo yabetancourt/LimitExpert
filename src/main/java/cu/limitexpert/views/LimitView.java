@@ -6,7 +6,6 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -17,6 +16,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import cu.limitexpert.components.MathFormula;
+import cu.limitexpert.utils.Step;
 import org.jpl7.PrologException;
 
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static cu.limitexpert.utils.PrologUtils.limite;
+import static cu.limitexpert.utils.PrologUtils.limitePasos;
 
 @PageTitle("Calculadora de límites")
 @Route(value = "limit", layout = MainLayout.class)
@@ -110,29 +111,29 @@ public class LimitView extends VerticalLayout {
             String limit = limitField.getValue();
 
             // Calcular los pasos del límite utilizando Prolog
-            List<String> steps = calculateLimitSteps(function, limit);
+            List<Step> steps = calculateLimitSteps(function, limit);
             stepContainer.removeAll();
             Span procedure = new Span("Procedimiento: ");
             procedure.addClassNames(LumoUtility.TextColor.TERTIARY);
             stepContainer.add(procedure);
             // Agregar cada paso como un elemento de texto separado
-            for (String step : steps) {
-                stepContainer.add(new Paragraph(step));
+            for (Step step : steps) {
+                stepContainer.add(step.getDescription(), step.getFormula());
             }
 
         });
     }
 
     // Método para calcular los pasos del límite
-    private List<String> calculateLimitSteps(String function, String limit) {
-        // Aquí iría el código para calcular los pasos del límite utilizando Prolog
-        // Por ahora, simplemente devolvemos una lista de pasos de ejemplo
-        List<String> steps = new ArrayList<>();
+    private List<Step> calculateLimitSteps(String function, String limit) {
+        List<Step> steps = new ArrayList<>();
         try {
-            steps.add("Paso 1 ...");
-            steps.add("Paso 2 ...");
-            steps.add("Paso 3 ...");
-            steps.add(limite(function, limit));
+            List<List<String>> pasos = limitePasos(function, limit);
+            for (List<String> list : pasos) {
+                steps.add(new Step(list.get(0), list.get(1)));
+            }
+            steps.add(new Step("Solución:", limite(function, limit)));
+            return steps;
         } catch (PrologException exception) {
             ConfirmDialog dialog = new ConfirmDialog();
             dialog.setHeader("Error");

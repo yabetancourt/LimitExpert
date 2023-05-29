@@ -50,7 +50,7 @@ public class PrologUtils {
 
     public static String limite(String function, String value) {
         String result = "";
-        Query query = new Query(MessageFormat.format("limite({0}, x, {1}, L)", function, value));
+        Query query = new Query(MessageFormat.format("limite({0}, x, {1}, L, _)", function, value));
         if (query.hasSolution()) {
             Map<String, Term> solution = query.oneSolution();
             Term limite = solution.get("L");
@@ -60,12 +60,24 @@ public class PrologUtils {
         return result;
     }
 
+    public static List<List<String>> limitePasos(String function, String value) {
+        List<List<String>> result = new ArrayList<>();
+        Query query = new Query(MessageFormat.format("limite({0}, x, {1}, L, P)", function, value));
+        if (query.hasSolution()) {
+            Map<String, Term> solution = query.oneSolution();
+            Term limite = solution.get("P");
+            result = listToString(limite);
+        }
+        query.close();
+        return result;
+    }
+
+
     private static List<List<String>> listToString(Term term) {
         List<List<String>> result = new ArrayList<>();
 
         if (term.isList()) {
             Term[] list = term.listToTermArray();
-            System.out.println(list.length);
             for (Term t : list) {
                 result.add(tupleToString(t));
             }
