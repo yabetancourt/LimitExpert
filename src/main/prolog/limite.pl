@@ -127,12 +127,12 @@ limite(log(X),V,P,L,Pasos):-
 %otros%
 limite_zero(X/Y,V,P,L,Pasos):-
 	T is Y,
-	((T\=0,limite_div(X/Y,V,P,L,Pasos));(L='división por cero',Pasos=['División por cero'])),!.
+	((T\=0,limite_div(X/Y,V,P,L,Pasos));(L='división por cero',Pasos=[('División por cero', '')])),!.
 
 limite_div(X/Y,V,P,L,Pasos):-
 	limite(X,V,P,LX,Pasos1),
 	limite(Y,V,P,LY,Pasos2),
-        ((indeterm(LX/LY,_,_,_),limite_LH(X/Y,V,P,L),append(Pasos1,Pasos2,Aux),append(Aux,['Límite indeterminado',('Aplicando LHospital',L)],Pasos));
+        ((indeterm(LX/LY,_,_,_),limite_LH(X/Y,V,P,L),append(Pasos1,Pasos2,Aux),append(Aux,[('Límite indeterminado Aplicando LHospital',L)],Pasos));
 	(number(LX),LY=infinito,L=0,append(Pasos1,Pasos2,Aux),append(Aux,[('Límite de la división',L)],Pasos));
 	(number(LX),LY=:=0,L = infinito,append(Pasos1,Pasos2,Aux),append(Aux,[('Límite de la división',L)],Pasos));
 	(atom(LX),L = LX,append(Pasos1,Pasos2,Aux),append(Aux,[('Límite de la división',L)],Pasos));
