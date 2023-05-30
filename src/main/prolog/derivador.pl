@@ -109,7 +109,7 @@ derivada(tanh(X), Y, DF * 1 / (cosh(X) ^ 2), Pasos) :-
 
 derivada(coth(X), _, 0, [('Derivada de una constante', 0)]) :- number(X), !.
 derivada(coth(X), X, -(1 / (senh(X) ^ 2)), [('Derivada de la tangente hiperbólica'),-(1 / (senh(X) ^ 2))]) :- atom(X), !.
-derivada(coth(X), Y, -(1 / (senh(X) ^ 2)) * DF) :-
+derivada(coth(X), Y, -(1 / (senh(X) ^ 2)) * DF,Pasos) :-
     derivada(X, Y, DF, Pasos1),
     append([('Derivada de la cotangente hiperbólica y Regla de la cadena', -(1 / (senh(X) ^ 2)) * DF)], Pasos1, Pasos).
 
@@ -122,3 +122,14 @@ derivar_oper(^, A, B, DA, DB, D, PasosActualizados) :-
     (number(B), D = B * A ^ (B - 1) * DA, !, PasosActualizados = [('Regla de la potencia', B * A ^ (B - 1) * DA)]);
     (number(A), D = A ^ B * DB, !, PasosActualizados = [('Regla de la potencia', A ^ B * DB)]);
     (D = e ^ (B * ln(A)) * (1 / A * DA * B + ln(A) * DB), PasosActualizados = [('Regla de la potencia', e ^ (B * ln(A)) * (1 / A * DA * B + ln(A) * DB))]).
+
+%Otros
+regla_derivacion("Regla de la suma: d[f(x)+g(x)] = f'(x)+g'(x)").
+regla_derivacion("Regla de la resta: d[f(x)-g(x)] = f'(x)-g'(x)").
+regla_derivacion("Regla de una constante por una función: d[k*f(x)] = k*f'(x)").
+regla_derivacion("Regla de la multiplicación: d[f(x)*g(x)] = f'(x)*g(x)+f(x)*g'(x)").
+regla_derivacion("Regla de la división: d[f(x)/g(x)] = (f'(x)*g(x)-f(x)*g'(x))/[g(x)]^2").
+regla_derivacion("Regla de la cadena(función compuesta): d(f[g(x)]) = f'[g(x)]*g'(x)").
+
+
+
