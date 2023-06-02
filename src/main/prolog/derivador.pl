@@ -1,4 +1,4 @@
-:- module(derivador,[derivar/4]).
+:- module(derivador,[derivar/4, obtener_reglas/1]).
 :- use_module(simplificador, [simplificar/2]).
 
 derivar(F, X, DF, Pasos) :-
@@ -6,10 +6,10 @@ derivar(F, X, DF, Pasos) :-
     simplificar(D, DF).
 
 derivada(F, X, DF, Pasos) :-
-    F =.. [Op, A, B], % Descomponer la expresi髇 en dos t茅rminos
+    F =.. [Op, A, B], % Descomponer la expresi贸n en dos t脙漏rminos
     derivada(A, X, DA, Pasos1),
     derivada(B, X, DB, Pasos2),
-    derivar_oper(Op, A, B, DA, DB, DF, Pasos3), % Aplicar la regla de derivaci髇 para la operaci髇
+    derivar_oper(Op, A, B, DA, DB, DF, Pasos3), % Aplicar la regla de derivaci贸n para la operaci贸n
     append(Pasos1, Pasos2, Aux), append(Aux, Pasos3, Pasos), !. % Agregar los nuevos pasos a la lista de pasos
 
 derivada(C, _, 0, [('Derivada de una constante', 0)]) :- number(C), !.
@@ -90,28 +90,28 @@ derivada(arccot(X), Y, -(1 / (1 + (X ^ 2))) * DF, Pasos) :-
     append([('Derivada del arcocotangente y Regla de la cadena', -(1 / (1 + (X ^ 2))) * DF)], Pasos1, Pasos).
 
 derivada(senh(X), _, 0, [('Derivada de una constante', 0)]) :- number(X), !.
-derivada(senh(X), X, cosh(X), [('Derivada del seno hiperb髄ico', cosh(X))]) :- atom(X), !.
+derivada(senh(X), X, cosh(X), [('Derivada del seno hiperb贸lico', cosh(X))]) :- atom(X), !.
 derivada(senh(X), Y, cosh(X) * DF, Pasos) :-
     derivada(X, Y, DF, Pasos1),
-    append([('Derivada del seno hiperb髄ico y Regla de la cadena', -(1 / (1 + (X ^ 2))) * DF)], Pasos1, Pasos).
+    append([('Derivada del seno hiperb贸lico y Regla de la cadena', -(1 / (1 + (X ^ 2))) * DF)], Pasos1, Pasos).
 
 derivada(cosh(X), _, 0, [('Derivada de una constante', 0)]) :- number(X), !.
-derivada(cosh(X), X,  senh(X), [('Derivada del coseno hiperb髄ico', senh(X))]) :- atom(X), !.
+derivada(cosh(X), X,  senh(X), [('Derivada del coseno hiperb贸lico', senh(X))]) :- atom(X), !.
 derivada(cosh(X), Y, senh(X) * DF, Pasos):-
     derivada(X, Y, DF, Pasos1),
-    append([('Derivada del coseno hiperb髄ico y Regla de la cadena', -(1 / (1 + (X ^ 2))) * DF)], Pasos1, Pasos).
+    append([('Derivada del coseno hiperb贸lico y Regla de la cadena', -(1 / (1 + (X ^ 2))) * DF)], Pasos1, Pasos).
 
 derivada(tanh(X), _, 0, [('Derivada de una constante', 0)]) :- number(X), !.
-derivada(tanh(X), X, 1 / (cosh(X) ^ 2), [('Derivada de la tangente hiperb髄ica', 1 / (cosh(X) ^ 2))]) :- atom(X), !.
+derivada(tanh(X), X, 1 / (cosh(X) ^ 2), [('Derivada de la tangente hiperb贸lica', 1 / (cosh(X) ^ 2))]) :- atom(X), !.
 derivada(tanh(X), Y, DF * 1 / (cosh(X) ^ 2), Pasos) :-
     derivada(X, Y, DF, Pasos1),
-    append([('Derivada de la tangente hiperb髄ica y Regla de la cadena', DF * 1 / (cosh(X) ^ 2))], Pasos1, Pasos).
+    append([('Derivada de la tangente hiperb贸lica y Regla de la cadena', DF * 1 / (cosh(X) ^ 2))], Pasos1, Pasos).
 
 derivada(coth(X), _, 0, [('Derivada de una constante', 0)]) :- number(X), !.
-derivada(coth(X), X, -(1 / (senh(X) ^ 2)), [('Derivada de la tangente hiperb髄ica'),-(1 / (senh(X) ^ 2))]) :- atom(X), !.
+derivada(coth(X), X, -(1 / (senh(X) ^ 2)), [('Derivada de la tangente hiperb贸lica'),-(1 / (senh(X) ^ 2))]) :- atom(X), !.
 derivada(coth(X), Y, -(1 / (senh(X) ^ 2)) * DF,Pasos) :-
     derivada(X, Y, DF, Pasos1),
-    append([('Derivada de la cotangente hiperb髄ica y Regla de la cadena', -(1 / (senh(X) ^ 2)) * DF)], Pasos1, Pasos).
+    append([('Derivada de la cotangente hiperb贸lica y Regla de la cadena', -(1 / (senh(X) ^ 2)) * DF)], Pasos1, Pasos).
 
 derivar_oper(+, _, _, DA, DB, DA + DB, [('Suma de derivadas', DA + DB)]).
 derivar_oper(-, _, _, DA, DB, DA - DB, [('Resta de derivadas', DA - DB)]).
@@ -126,10 +126,10 @@ derivar_oper(^, A, B, DA, DB, D, PasosActualizados) :-
 %Otros
 regla_derivacion("Regla de la suma: d[f(x)+g(x)] = f'(x)+g'(x)").
 regla_derivacion("Regla de la resta: d[f(x)-g(x)] = f'(x)-g'(x)").
-regla_derivacion("Regla de una constante por una funci髇: d[k*f(x)] = k*f'(x)").
-regla_derivacion("Regla de la multiplicaci髇: d[f(x)*g(x)] = f'(x)*g(x)+f(x)*g'(x)").
-regla_derivacion("Regla de la divisi髇: d[f(x)/g(x)] = (f'(x)*g(x)-f(x)*g'(x))/[g(x)]^2").
-regla_derivacion("Regla de la cadena(funci髇 compuesta): d(f[g(x)]) = f'[g(x)]*g'(x)").
+regla_derivacion("Regla de una constante por una funci贸n: d[k*f(x)] = k*f'(x)").
+regla_derivacion("Regla de la multiplicaci贸n: d[f(x)*g(x)] = f'(x)*g(x)+f(x)*g'(x)").
+regla_derivacion("Regla de la divisi贸n: d[f(x)/g(x)] = (f'(x)*g(x)-f(x)*g'(x))/[g(x)]^2").
+regla_derivacion("Regla de la cadena(funci贸n compuesta): d(f[g(x)]) = f'[g(x)]*g'(x)").
 
-
-
+obtener_reglas(R) :-
+    findall(X, regla_derivacion(X), R).

@@ -42,7 +42,7 @@ public class PrologUtils {
 
             // Obtener el término que representa la función derivada
             Term pasos = solution.get("P");
-            result = listToString(pasos);
+            result = tupleListToString(pasos);
         }
         query.close();
         return result;
@@ -66,14 +66,40 @@ public class PrologUtils {
         if (query.hasSolution()) {
             Map<String, Term> solution = query.oneSolution();
             Term limite = solution.get("P");
-            result = listToString(limite);
+            result = tupleListToString(limite);
+        }
+        query.close();
+        return result;
+    }
+
+    public static List<String> getDerivationRules(){
+        List<String> result = new ArrayList<>();
+
+        Query query = new Query("obtener_reglas(R)");
+        if (query.hasSolution()) {
+            Map<String, Term> solution = query.oneSolution();
+            Term reglas = solution.get("R");
+            result = listToString(reglas);
         }
         query.close();
         return result;
     }
 
 
-    private static List<List<String>> listToString(Term term) {
+    private static List<String> listToString(Term term) {
+        List<String> result = new ArrayList<>();
+
+        if (term.isList()) {
+            Term[] list = term.listToTermArray();
+            for (Term t : list) {
+                result.add(termToString(t));
+            }
+        }
+
+        return result;
+    }
+
+    private static List<List<String>> tupleListToString(Term term) {
         List<List<String>> result = new ArrayList<>();
 
         if (term.isList()) {
@@ -102,7 +128,6 @@ public class PrologUtils {
 
     private static String termToString(Term term) {
         if (term.isCompound()) {
-            System.out.println(term);
             String functor = term.name();
             Term[] args = term.args();
 

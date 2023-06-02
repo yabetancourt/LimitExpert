@@ -10,6 +10,8 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import cu.limitexpert.components.MathFormula;
 
+import static cu.limitexpert.utils.PrologUtils.getDerivationRules;
+
 @PageTitle("Ayuda")
 @Route(value = "help", layout = MainLayout.class)
 public class HelpView extends VerticalLayout {
@@ -32,6 +34,12 @@ public class HelpView extends VerticalLayout {
         // sección sobre funciones
         Accordion accordion = new Accordion();
         accordion.setWidthFull();
+
+        AccordionPanel rulesPanel = new AccordionPanel(new H3("Reglas de Derivación"));
+        for (String s : getDerivationRules())
+            rulesPanel.addContent(new Paragraph(s));
+        accordion.add(rulesPanel);
+
 
         MathFormula polyExample = new MathFormula("f(x) = a_n x^n + a_{n-1} x^{n-1} + ... + a_1 x + a_0");
         Paragraph polyDescription = new Paragraph("Un polinomio es una expresión matemática que consta de una suma de términos, cada uno de los cuales es el producto de una constante y una variable elevada a una potencia entera no negativa.");
