@@ -1,7 +1,20 @@
-# Experto en Límites
+# Welcome to the Expert System for Limits and Derivatives!
 
-This project can be used as a starting point to create your own Vaadin application with Spring Boot.
-It contains all the necessary configuration and some placeholder files to get you started.
+This application is an expert system for Limits and Derivatives, developed using Prolog and featuring a user interface in Java with Vaadin. The application consists of three main modules: one for calculating limits, another for deriving, and another for simplifying.
+
+## Module: Limits
+The Limits module allows you to calculate the limit of a function at a specific point.
+`prolog/limite.pl`
+
+## Module: Derivatives
+The Derivatives module allows you to calculate the derivative of a function at a specific point.
+`prolog/derivador.pl`
+
+## Module: Simplification
+The Simplification module allows you to simplify a function.
+`prolog/simplificador.pl`
+
+If you have any questions or issues, please feel free to contact us.
 
 ## Running the application
 
@@ -30,6 +43,7 @@ Once the JAR file is built, you can run it using
 - `views` package in `src/main/java` contains the server-side Java views of your application.
 - `views` folder in `frontend/` contains the client-side JavaScript views of your application.
 - `themes` folder in `frontend/` contains the custom CSS styles.
+- `prolog` folder in `src/main/` contains the prolog code.
 
 ## Useful links
 
@@ -37,9 +51,3 @@ Once the JAR file is built, you can run it using
 - Follow the tutorial at [vaadin.com/docs/latest/tutorial/overview](https://vaadin.com/docs/latest/tutorial/overview).
 - Create new projects at [start.vaadin.com](https://start.vaadin.com/).
 - Search UI components and their usage examples at [vaadin.com/docs/latest/components](https://vaadin.com/docs/latest/components).
-- View use case applications that demonstrate Vaadin capabilities at [vaadin.com/examples-and-demos](https://vaadin.com/examples-and-demos).
-- Build any UI without custom CSS by discovering Vaadin's set of [CSS utility classes](https://vaadin.com/docs/styling/lumo/utility-classes). 
-- Find a collection of solutions to common use cases at [cookbook.vaadin.com](https://cookbook.vaadin.com/).
-- Find add-ons at [vaadin.com/directory](https://vaadin.com/directory).
-- Ask questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/vaadin) or join our [Discord channel](https://discord.gg/MYFq5RTbBn).
-- Report issues, create pull requests in [GitHub](https://github.com/vaadin).
