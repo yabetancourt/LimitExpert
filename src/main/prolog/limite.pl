@@ -23,9 +23,6 @@ limite(-X,V,P,L,Pasos):-
 	L= -LX,
 	append(Pasos1,[('Límite de una expresión negativa',L)],Pasos).
 
-%limite fundamental algebraico%
-limite((1+1/X)**X,X,infinito,e,[('Límite fundamental algebraico',e)]).
-
 %limite del producto%
 limite(X*Y,V,P,L,Pasos):-
 	limite(X,V,P,LX,Pasos1),
@@ -115,12 +112,12 @@ limite(sqrt(X),V,P,L,Pasos):-
 %limite con logaritmos base 10 y log natural%
 limite(ln(X),V,P,L,Pasos):-
 	limite(X,V,P,LX,Pasos1),
-	((LX=<0,L=indeterminado);(LA is log(LX),aproximar(LA,L))),!,
+	((LX=<0,L=indeterminado);(atom(LX),L=LX);(LA is log(LX),aproximar(LA,L))),!,
 	append(Pasos1,[('Límite del logaritmo natural',L)],Pasos).
 
 limite(log(X),V,P,L,Pasos):-
 	limite(X,V,P,LX,Pasos1),
-	((LX=<0,L=indeterminado);(LA is log10(LX),aproximar(LA,L))),!,
+	((LX=<0,L=indeterminado);(atom(LX),L=LX);(LA is log10(LX),aproximar(LA,L))),!,
 	append(Pasos1,[('Límite del logaritmo base 10',L)],Pasos).
 
 
