@@ -24,7 +24,7 @@ limite(-X,V,P,L,Pasos):-
 	append(Pasos1,[('Límite de una expresión negativa',L)],Pasos).
 
 %limite fundamental algebraico%
-limite((1+1/X)**X,X,oo,e,[('Límite fundamental algebraico',e)]).
+limite((1+1/X)^X,X,oo,e,[('Límite fundamental algebraico',e)]).
 
 %limite del producto%
 limite(X*Y,V,P,L,Pasos):-
