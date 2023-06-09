@@ -1,13 +1,13 @@
 :- set_prolog_flag(answer_write_options, [max_depth(1000)]).
 :- use_module(derivador, [derivar/4]).
 %indeterminaciones%
-indeterm(X*infinito,_,_,indeterminado):-X=:=0.
-indeterm(infinito*X,_,_,indeterminado):-X=:=0.
-indeterm(infinito/infinito,_,_,indeterminado).
-indeterm(X^infinito,_,_,indeterminado):-X=:=1.
+indeterm(X*oo,_,_,indeterminado):-X=:=0.
+indeterm(oo*X,_,_,indeterminado):-X=:=0.
+indeterm(oo/oo,_,_,indeterminado).
+indeterm(X^oo,_,_,indeterminado):-X=:=1.
 indeterm(X^Y,_,_,indeterminado):-X=:=0,Y=:=0.
 indeterm(X/Y,_,_,indeterminado):-X=:=0.0,Y=:=0.0.
-indeterm(infinito-infinito,_,_,indeterminado).
+indeterm(oo-oo,_,_,indeterminado).
 
 %limites bases%
 limite(pi,_,_,3.1416,[('Límite de pi',3.1416)]).
@@ -24,7 +24,7 @@ limite(-X,V,P,L,Pasos):-
 	append(Pasos1,[('Límite de una expresión negativa',L)],Pasos).
 
 %limite fundamental algebraico%
-limite((1+1/X)**X,X,infinito,e,[('Límite fundamental algebraico',e)]).
+limite((1+1/X)**X,X,oo,e,[('Límite fundamental algebraico',e)]).
 
 %limite del producto%
 limite(X*Y,V,P,L,Pasos):-
@@ -133,8 +133,8 @@ limite_div(X/Y,V,P,L,Pasos):-
 	limite(X,V,P,LX,Pasos1),
 	limite(Y,V,P,LY,Pasos2),
         ((indeterm(LX/LY,_,_,_),limite_LH(X/Y,V,P,L),append(Pasos1,Pasos2,Aux),append(Aux,[('Límite indeterminado Aplicando LHospital',L)],Pasos));
-	(number(LX),LY=infinito,L=0,append(Pasos1,Pasos2,Aux),append(Aux,[('Límite de la división',L)],Pasos));
-	(number(LX),LY=:=0,L = infinito,append(Pasos1,Pasos2,Aux),append(Aux,[('Límite de la división',L)],Pasos));
+	(number(LX),LY=oo,L=0,append(Pasos1,Pasos2,Aux),append(Aux,[('Límite de la división',L)],Pasos));
+	(number(LX),LY=:=0,L = oo,append(Pasos1,Pasos2,Aux),append(Aux,[('Límite de la división',L)],Pasos));
 	(atom(LX),L = LX,append(Pasos1,Pasos2,Aux),append(Aux,[('Límite de la división',L)],Pasos));
 	(atom(LY),L = LY,append(Pasos1,Pasos2,Aux),append(Aux,[('Límite de la división',L)],Pasos));
 	(mcd(LX,LY,D),XD is LX/D,YD is LY/D,aproximar(XD,AX),aproximar(YD,AY),((AY=:=1.0,L=AX);L=AX/AY),!,append(Pasos1,Pasos2,Aux),append(Aux,[('Hallando mcd y dividiendo',L)],Pasos))),!.

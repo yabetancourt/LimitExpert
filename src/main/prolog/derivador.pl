@@ -1,4 +1,4 @@
-:- module(derivador,[derivar/4, obtener_reglas/1]).
+:- module(derivador,[derivar/4]).
 :- use_module(simplificador, [simplificar/2]).
 
 derivar(F, X, DF, Pasos) :-
@@ -123,13 +123,3 @@ derivar_oper(^, A, B, DA, DB, D, PasosActualizados) :-
     (number(A), D = A ^ B * DB, !, PasosActualizados = [('Regla de la potencia', A ^ B * DB)]);
     (D = e ^ (B * ln(A)) * (1 / A * DA * B + ln(A) * DB), PasosActualizados = [('Regla de la potencia', e ^ (B * ln(A)) * (1 / A * DA * B + ln(A) * DB))]).
 
-%Otros
-regla_derivacion("Regla de la suma: d[f(x)+g(x)] = f'(x)+g'(x)").
-regla_derivacion("Regla de la resta: d[f(x)-g(x)] = f'(x)-g'(x)").
-regla_derivacion("Regla de una constante por una función: d[k*f(x)] = k*f'(x)").
-regla_derivacion("Regla de la multiplicación: d[f(x)*g(x)] = f'(x)*g(x)+f(x)*g'(x)").
-regla_derivacion("Regla de la división: d[f(x)/g(x)] = (f'(x)*g(x)-f(x)*g'(x))/[g(x)]^2").
-regla_derivacion("Regla de la cadena(función compuesta): d(f[g(x)]) = f'[g(x)]*g'(x)").
-
-obtener_reglas(R) :-
-    findall(X, regla_derivacion(X), R).
